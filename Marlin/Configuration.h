@@ -1116,7 +1116,7 @@
  *
  * :[2,3,4,5,6,7]
  */
-#define ENDSTOP_NOISE_THRESHOLD 2                          // Viktoschi
+//#define ENDSTOP_NOISE_THRESHOLD 2                          // Viktoschi
 
 // Check for stuck or disconnected endstops during homing moves.
 //#define DETECT_BROKEN_ENDSTOP
@@ -1146,7 +1146,7 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80.121, 80.121, 399.778, 445 }         // Viktoschi
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 1280, 1280, 1280, 1280 }         // Viktoschi
 
 /**
  * Default Max Feed Rate (linear=mm/s, rotational=°/s)
@@ -2684,7 +2684,7 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // https://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER      // Viktoschi
+#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER      // Viktoschi
 
 //
 // K.3D Full Graphic Smart Controller
