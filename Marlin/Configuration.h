@@ -60,7 +60,7 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(Viktoschi, Sidewinder X1)" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "(Viktoschi, Geeetech Průša i3 Pro B)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 /**
@@ -135,7 +135,7 @@
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Artillery Sidewinder X1"      // Viktoschi
+#define CUSTOM_MACHINE_NAME "Geeetech Průša i3 Pro B"      // Viktoschi
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -622,7 +622,7 @@
 #define HEATER_5_MAXTEMP 275
 #define HEATER_6_MAXTEMP 275
 #define HEATER_7_MAXTEMP 275
-#define BED_MAXTEMP      150
+#define BED_MAXTEMP      125
 #define CHAMBER_MAXTEMP  60
 
 /**
@@ -750,16 +750,10 @@
   //#define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Print Bed PID debug data to the serial port.
 
-  // Artillery Sidewinder X1                               // Viktoschi
-  #define DEFAULT_bedKp 244.21                             // Viktoschi
-  #define DEFAULT_bedKi  45.87                             // Viktoschi
-  #define DEFAULT_bedKd 325.08                             // Viktoschi
-
-  // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  //#define DEFAULT_bedKp 10.00                            // Viktoschi
-  //#define DEFAULT_bedKi .023                             // Viktoschi
-  //#define DEFAULT_bedKd 305.4                            // Viktoschi
+  // 12v (120 watt?) MK2a PCB Heatbed into 4mm borosilicate (Geeetech Průša i3 Pro, Pro/B/C/X)
+  #define DEFAULT_bedKp 234.88
+  #define DEFAULT_bedKi 42.79
+  #define DEFAULT_bedKd 322.28
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
@@ -1175,15 +1169,14 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 1280, 1280, 1280, 1280 }         // Viktoschi
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 78.74, 78.74, 400, 415 }         // Viktoschi
 
 /**
  * Default Max Feed Rate (linear=mm/s, rotational=°/s)
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 200, 200, 20, 40 }                     // Viktoschi
-           
+#define DEFAULT_MAX_FEEDRATE          { 400, 400, 2, 45 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -1196,7 +1189,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 10000 }               // Viktoschi
+#define DEFAULT_MAX_ACCELERATION      { 5000, 5000, 75, 5000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1210,10 +1203,16 @@
  *   M204 P    Acceleration
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
+ *   M204 I    Angular Acceleration
+ *   M204 J    Angular Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          1000     // X, Y, Z and E acceleration for printing moves              // Viktoschi
-#define DEFAULT_RETRACT_ACCELERATION  10000   // E acceleration for retracts                                 // Viktoschi
-#define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves        // Viktoschi
+#define DEFAULT_ACCELERATION                  1000  // X, Y, Z ... and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION          2000  // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION           3000  // X, Y, Z ... acceleration for travel (non printing) moves
+#if ENABLED(AXIS4_ROTATES)
+  #define DEFAULT_ANGULAR_ACCELERATION        3000  // I, J, K acceleration for rotational-only printing moves
+  #define DEFAULT_ANGULAR_TRAVEL_ACCELERATION 3000  // I, J, K acceleration for rotational-only travel (non printing) moves
+#endif
 
 /**
  * Default Jerk limits (mm/s)
@@ -1702,16 +1701,16 @@
 // @section geometry
 
 // The size of the printable area
-#define X_BED_SIZE 300                                     // Viktoschi
-#define Y_BED_SIZE 300                                     // Viktoschi
+#define X_BED_SIZE 200                                     // Viktoschi
+#define Y_BED_SIZE 200                                     // Viktoschi
 
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
-#define X_MIN_POS -3                                       // Viktoschi
-#define Y_MIN_POS -3                                       // Viktoschi
+#define X_MIN_POS -12                                       // Viktoschi
+#define Y_MIN_POS -8                                       // Viktoschi
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 400                                      // Viktoschi
+#define X_MAX_POS (-X_MIN_POS+X_BED_SIZE)
+#define Y_MAX_POS (-Y_MIN_POS+Y_BED_SIZE)
+#define Z_MAX_POS 200                                      // Viktoschi
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
 //#define J_MIN_POS 0
@@ -2142,7 +2141,7 @@
 #if ENABLED(SKEW_CORRECTION)
   // Input all length measurements here:
   #define XY_DIAG_AC 282.8427124746
-  #define XY_DIAG_BD 282.8427124746
+  #define XY_DIAG_BD 281.8196945719
   #define XY_SIDE_AD 200
 
   // Or, set the XY skew factor directly:
